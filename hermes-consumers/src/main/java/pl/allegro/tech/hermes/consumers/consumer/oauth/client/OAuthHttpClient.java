@@ -71,6 +71,9 @@ public class OAuthHttpClient implements OAuthClient {
     try {
       return createHttpRequest(request).send();
     } catch (InterruptedException | TimeoutException | ExecutionException e) {
+      if (e instanceof InterruptedException) {
+        Thread.currentThread().interrupt();
+      }
       throw new OAuthTokenRequestException(
           "An exception occurred while performing token request", e);
     }
